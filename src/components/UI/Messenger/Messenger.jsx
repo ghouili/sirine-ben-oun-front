@@ -12,8 +12,9 @@ import {
 import moment from "moment";
 import streamSaver from 'streamsaver';
 import { SocketContext } from "../../../Context/SocketContext";
+import worker from '../../../worker';
 
-const worker = new Worker('../../../../public/worker.js');
+// const worker = new Worker('../../../../public/worker.js');
 
 function Messenger({ setIsMessenger, display, roomId, peers,fileNameRef, gotFile, setGotFile  }) {
   let time = moment(new Date()).format("hh:mm A");

@@ -14,7 +14,7 @@ function HomePage() {
   const roomRef = useRef();
   const userRef = useRef();
   // const user = JSON.parse(localStorage.getItem("user"));
-  const user = {firstname: 'test'};
+  // const user = {firstname: 'test'};
   useEffect(() => {
     socket.on("FE-error-user-exist", ({ error }) => {
       if (!error) {
@@ -22,12 +22,12 @@ function HomePage() {
         const userName = userRef.current.value;
 
         sessionStorage.setItem("user", userName);
-        navigate(`/room/${roomName}`);
+        navigate(`/${roomName}`);
       } else {
         swal("Warning!", "User name already exist", "warning");
       }
     });
-  }, [navigate]);
+  }, [socket]);
 
   function clickJoin() {
     const roomName = roomRef.current.value;
@@ -73,13 +73,12 @@ function HomePage() {
                   {/* <FontAwesomeIcon className="icon-block" icon={faKeyboard} /> */}
                   <input
                     placeholder="Username"
-                    value={user.firstname}
                     ref={userRef}
                   />
                 </div>
                 <div className="input-section">
                   {/* <FontAwesomeIcon className="icon-block" icon={faKeyboard} /> */}
-                  <input placeholder="Room name" ref={roomRef} />
+                  <input placeholder="Room name"  ref={roomRef} />
                 </div>
               </div>
             </div>

@@ -11,9 +11,9 @@ function App() {
         <Route  
           path="/:id" 
           element={
-            <Check >
+            // <Check >
               <CallPage />
-            </Check>
+            // </Check>
           } 
         />
         <Route  path="/" element={<HomePage />} />

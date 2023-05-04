@@ -4,18 +4,17 @@ import { useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {
-  faVideo,
-  faMicrophone,
-  faPhone,
-  faAngleUp,
-  faClosedCaptioning,
-  faDesktop,
-  faMicrophoneSlash,
+  // faVideo,
+  // faMicrophone,
+  // faPhone,
+  // faAngleUp,
+  // faClosedCaptioning,
+  // faDesktop,
+  // faMicrophoneSlash,
   faVideoSlash,
-  faRecordVinyl,
-  faStop,
+  // faRecordVinyl,
+  // faStop,
 } from "@fortawesome/free-solid-svg-icons";
-
 
 import VideoCard from "../video/VideoCard";
 import "./CallPage.scss";
@@ -24,14 +23,24 @@ import socket from "../../Socket";
 import CallPageFooter from "../UI/CallPageFooter/CallPageFooter";
 import CallPageHeader from "../UI/CallPageHeader/CallPageHeader";
 import Messenger from "./../UI/Messenger/Messenger";
+import worker from "../../worker";
 
-const worker = new Worker('../../../public/worker.js');
+
+// function loadWebWorker(worker) {
+//   const code = worker.toString();
+//   const blob = new Blob(["(" + code + ")()"]);
+//   return new Worker(URL.createObjectURL(blob));
+// }
+
+// const worker = loadWebWorker(WORKER);
+// const worker = new Worker('../../../public/worker.js');
 function CallPage() {
   const [isMessenger, setIsMessenger] = useState(false);
   const [messageAlert, setMessageAlert] = useState({});
 
   const params = useParams();
-  const currentUser = sessionStorage.getItem("user");
+  // const currentUser = sessionStorage.getItem("user");
+  const currentUser = "user";
   const [peers, setPeers] = useState([]);
   const [userVideoAudio, setUserVideoAudio] = useState({
     localUser: { video: true, audio: true },
@@ -161,23 +170,24 @@ function CallPage() {
       });
     });
 
-    return () => {
-      socket.disconnect();
-    };
+    // return () => {
+    //   socket.disconnect();
+    // };
 
+    console.log('peers ::::');
     console.log(peers);
-  }, []);
+  }, [socket]);
 
-  const handelReceivingData = async (data) =>  {
-    if (data.toString().includes('done') ) {
+  const handelReceivingData = async (data) => {
+    if (data.toString().includes("done")) {
       setGotFile(true);
 
-      const parse = JSON.parse(data)
+      const parse = JSON.parse(data);
       fileNameRef.current = parse.fileNAme;
     } else {
       worker.postMessage(data);
     }
-  }
+  };
 
   function createPeer(userId, caller, stream) {
     const peer = new Peer({
@@ -201,8 +211,6 @@ function CallPage() {
 
     return peer;
   }
-
-  
 
   function addPeer(incomingSignal, callerId, stream) {
     const peer = new Peer({
